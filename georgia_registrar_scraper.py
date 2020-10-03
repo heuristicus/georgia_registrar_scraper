@@ -37,6 +37,6 @@ with open("georgia_registrars.txt", 'w') as f:
         for ind in range(1, len(split_details[1:]), 2):
             f.write(split_details[ind] + "\n" + split_details[ind + 1] + "\n")
 
-        f.write("\n")
+        f.write("\n\n")
 
         back_button.click()
