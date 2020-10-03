@@ -28,6 +28,13 @@ with open("georgia_registrars.txt", 'w') as f:
         # Rejoin the details to allow regex processing
         details = "\n".join(registrar_data.text.strip().splitlines()[1:])
 
+        if "email" not in details.lower():
+            print("{} has no email address associated".format(county_name))
+        if "fax" not in details.lower():
+            print("{} has no fax associated".format(county_name))
+        if "telephone" not in details.lower():
+            print("{} has no telephone associated".format(county_name))
+
         f.write(county_name + " County\n")
         split_details = endcolon.split(details)
         # The split will have either 5 or 7 elements. There can be a physical address as well as a mailing address,
