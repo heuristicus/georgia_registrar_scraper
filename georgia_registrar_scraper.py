@@ -1,3 +1,5 @@
+import re
+
 import selenium
 from selenium.webdriver.support.ui import WebDriverWait, Select
 
@@ -26,7 +28,17 @@ for i in range(0, len(county_dropdown.options)):
     back_button.click()
 
 with open("georgia_registrars.txt", 'w') as f:
+    # Use this regex to split the registrar data and put it into the file in a more easily readable format.
+    # The different contact detail lines end in a colon.
+    endcolon = re.compile("(.*:)$\n", flags=re.M)
     for county in sorted(registrars):
         f.write(county + " County\n")
-        f.write(registrars[county] + "\n")
+        split_details = endcolon.split(registrars[county])
+        # The split will have either 5 or 7 elements. There can be a physical address as well as a mailing address,
+        # but there is always at least one of these, and there is always contact information.
+        f.write(split_details[0] + "\n")  # the name of the registrar
+        # Skip ahead by two each loop as the heading and data are paired
+        for i in range(1, len(split_details[1:]), 2):
+            f.write(split_details[i] + "\n" + split_details[i + 1] + "\n")
+
         f.write("\n")
